@@ -1,0 +1,283 @@
+swagger: '2.0'
+info:
+  contact: {}
+  title: api.dwh.dev swagger
+  version: 1.0.0
+host: api.dwh.dev
+basePath: /
+schemes:
+  - https
+paths:
+  /api/v1/ddl/:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              database:
+                properties:
+                  branch:
+                    properties:
+                      name:
+                        example: main
+                        type: string
+                    type: object
+                  environment:
+                    example: development
+                    type: string
+                  uuid:
+                    example: ''
+                    type: string
+                type: object
+              details:
+                example: null
+                x-nullable: true
+              filetype:
+                example: SQL
+                type: string
+              source:
+                example: CREATE TABLE t1(ID INT, NAME STRING);
+                type: string
+              type:
+                example: GET_DDL
+                type: string
+            type: object
+      responses:
+        '200':
+          description: ''
+      tags:
+        - DDL
+      description: Add
+      operationId: add
+      summary: Add
+  /api/v1/ddl/dbt/:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              database:
+                properties:
+                  branch:
+                    properties:
+                      name:
+                        example: main
+                        type: string
+                    type: object
+                  environment:
+                    example: development
+                    type: string
+                  uuid:
+                    example: ''
+                    type: string
+                type: object
+              source:
+                example: dbt compile manifest.json
+                type: string
+              type:
+                example: MANIFEST
+                type: string
+            type: object
+      responses:
+        '200':
+          description: ''
+      tags:
+        - DBT
+      description: Add
+      operationId: add1
+      summary: Add
+  /api/v1/ddl/dbt/{dbt-uuid}/:
+    get:
+      parameters:
+        - in: path
+          name: dbt-uuid
+          required: true
+          type: string
+        - in: header
+          name: x-api-key
+          type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - DBT
+      description: Parsing status
+      operationId: parsingStatus1
+      summary: Parsing status
+  /api/v1/ddl/source/{source-uuid}/status:
+    parameters:
+      - in: path
+        name: source-uuid
+        required: true
+        type: string
+    get:
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - DDL
+      description: Parsing status
+      operationId: parsingStatus
+      summary: Parsing status
+  /api/v1/project/:
+    get:
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Project
+      description: List
+      operationId: list
+      summary: List
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              project:
+                properties:
+                  name:
+                    example: projectName
+                    type: string
+                type: object
+              vendor:
+                example: snowflake
+                type: string
+            type: object
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Project
+      description: Create
+      operationId: create
+      summary: Create
+  /api/v1/project/change-ownership/:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              project:
+                properties:
+                  uuid:
+                    example: ''
+                    type: string
+                type: object
+              user:
+                properties:
+                  to:
+                    properties:
+                      name:
+                        example: null
+                        x-nullable: true
+                    type: object
+                type: object
+            type: object
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Project
+      description: Delete
+      operationId: delete
+      summary: Delete
+  /api/v1/project/share/:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              permissions:
+                example:
+                  - PROJECT:VIEW
+                items:
+                  example: PROJECT:VIEW
+                  type: string
+                type: array
+              project:
+                properties:
+                  uuid:
+                    example: ''
+                    type: string
+                type: object
+              user:
+                properties:
+                  to:
+                    example:
+                      - name: dwhdev username (email)
+                    items:
+                      properties:
+                        name:
+                          example: dwhdev username (email)
+                          type: string
+                      type: object
+                    type: array
+                type: object
+            type: object
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Project
+      description: Share
+      operationId: share
+      summary: Share
+  /api/v1/project/{project-uuid}:
+    parameters:
+      - in: path
+        name: project-uuid
+        required: true
+        type: string
+    get:
+      parameters:
+        - in: header
+          name: x-api-key
+          type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Project
+      description: Info
+      operationId: info
+      summary: Info
+tags: []
